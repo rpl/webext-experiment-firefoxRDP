@@ -1,0 +1,204 @@
+[
+  {
+    "namespace": "experiments",
+    "allowedContexts": ["devtools"],
+    "defaultContexts": ["devtools"]
+  },
+  {
+    "namespace": "experiments.firefoxRDP",
+    "description": "Simple experiment to speedup prototyping of new devtools api on top of the Firefox Remote Debugging Protocol",
+    "allowedContexts": ["devtools"],
+    "defaultContexts": ["devtools"],
+    "events": [
+      {
+        "name": "onRDPEvent",
+        "type": "function",
+        "description": "Fired when an unsolicited RDP event has been received.",
+        "parameters": [
+          {
+            "type": "number",
+            "name": "rdpConnectionId"
+          },
+          {
+            "type": "string",
+            "name": "rdpEventName"
+          },
+          {
+            "type": "object",
+            "name": "rdpEventData",
+            "additionalProperties": { "type": "any" }
+          }
+        ]
+      },
+      {
+        "name": "onDisconnected",
+        "type": "function",
+        "description": "Fired when an RDP connection has been closed.",
+        "parameters": [
+          {
+            "type": "number",
+            "name": "rdpConnectionId"
+          }
+        ]
+      }
+    ],
+    "functions": [
+      {
+        "name": "connect",
+        "type": "function",
+        "description": "Open an RDP connection to a target URL",
+        "async": "callback",
+        "parameters": [
+          {
+            "optional": true,
+            "type": "string",
+            "name": "targetURL",
+            "format": "url",
+            "description": "The url of the RDP target."
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "description": "Callback called when the connection has been created",
+            "parameters": [
+              {
+                "name": "rdpConnectionId",
+                "type": "number"
+              },
+              {
+                "name": "rdpTargetForm",
+                "type": "object",
+                "additionalProperties": { "type": "any" }
+              },
+              {
+                "name": "rdpTargetTraits",
+                "type": "object",
+                "additionalProperties": { "type": "any" }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "disconnect",
+        "type": "function",
+        "description": "Close an RDP connection",
+        "async": "callback",
+        "parameters": [
+          {
+            "optional": true,
+            "type": "number",
+            "name": "rdpConnectionId",
+            "default": 0
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "getTargetInfo",
+        "type": "function",
+        "description": "Get the target form and traits info for a Firefox RDP connection",
+        "async": "callback",
+        "parameters": [
+          {
+            "optional": true,
+            "type": "number",
+            "name": "rdpConnectionId",
+            "default": 0
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "rdpFormInfo",
+                "type": "object",
+                "additionalProperties": { "type": "any" }
+              },
+              {
+                "name": "rdpTraitsInfo",
+                "type": "object",
+                "additionalProperties": { "type": "any" }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "sendRequest",
+        "type": "function",
+        "description": "Send an RDP request on a Firefox RDP connection",
+        "async": "callback",
+        "parameters": [
+          {
+            "optional": true,
+            "type": "number",
+            "name": "rdpConnectionId",
+            "default": 0
+          },
+          {
+            "type": "string",
+            "name": "rdpActor"
+          },
+          {
+            "type": "string",
+            "name": "rdpRequestType"
+          },
+          {
+            "optional": true,
+            "type": "object",
+            "name": "rdpRequestProperties",
+            "additionalProperties": { "type": "any" },
+            "default": {}
+          }
+        ]
+      },
+      {
+        "name": "subscribeEvents",
+        "type": "function",
+        "description": "Subscribe an RDP event",
+        "async": "callback",
+        "parameters": [
+          {
+            "optional": true,
+            "type": "number",
+            "name": "rdpConnectionId",
+            "default": 0
+          },
+          {
+            "type": "array",
+            "name": "rdpEventNames",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      {
+        "name": "unsubscribeEvents",
+        "type": "function",
+        "description": "Unsubscribe an RDP event",
+        "async": "callback",
+        "parameters": [
+          {
+            "optional": true,
+            "type": "number",
+            "name": "rdpConnectionId",
+            "default": 0
+          },
+          {
+            "type": "array",
+            "name": "rdpEventNames",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
